@@ -1,0 +1,39 @@
+version: '3'
+services:
+  app:
+    container_name: docker-fastapi
+    #command: python -u main.py
+    #cd $PWD/app && python -u main.py
+    image: api
+    #build: .
+    restart: always
+    ports:
+      - '80:80'
+    depends_on:
+      - mongo
+    links:
+      - mongo
+
+    #docker run -d --name mycontainer -p 80:80 myimg
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    hostname: test_mongodb
+
+    environment:
+      - MONGO_INITDB_DATABASE=teste
+      - MONGO_INITDB_ROOT_USERNAME=romulo
+      - MONGO_INITDB_ROOT_PASSWORD=toor
+      - MONGO_NON_ROOT_USERNAME=saas
+      - MONGO_NON_ROOT_PASSWORD=secret
+
+    volumes:
+      - mongodbdata:/data/db
+    command: [--auth]
+    restart: always
+volumes:
+  mongodbdata:
+#CMD [ "python", "app/main.py" ]
