@@ -1,46 +1,29 @@
-import requests
-from bs4 import BeautifulSoup
+from typing import Optional
+from pymongo import MongoClient
+from fastapi import FastAPI
+from database import mongo_methods
+
+app = FastAPI()
 
 
-def get_request(url_request):
-    return requests.get(url_request)
+@app.get("/")
+def read_root():
+    try:
+        return mongo_methods.read()
+    except:
+        print("An exception occurred")
+
+#
+# @app.get("/items/{item_id}")
+# def read_item(item_id: int, q: Optional[str] = None):
+#     return {"item_id": item_id, "q": q}
 
 
-def parse_request(page_returned):
-    """
+@app.get("/items")
+def read_links(item_id: str):
+    return {"link": mongo_methods.read()}
 
-    :param page_returned: It have the main link requested
-    :return: List of links found
-    """
-    list_appearances = []
-    soup = BeautifulSoup(page_returned.text, "html.parser")
-    print("The href links are :")
-    for link in soup.select('a[href^="http"]'):
-        print(link.get('href'))
-        list_appearances.append(link.get('href'))
-    return list_appearances
-
-
-def extract_characteristic(html):
-    soup = BeautifulSoup(html.text, "html.parser")
-    list_characteristic = ['p', 'div', 'script','img','input','form','href','src','h1','h2']
-    dict_full_characteristic={}
-    for i in list_characteristic:
-        dict_full_characteristic[f'{i}'] = len(soup.find_all(f'{i}'))
-    return dict_full_characteristic
-
-
-
-def save_db():
-    pass
-
-# implementing search and save in database
-# implementing API
-# implementign randon forest 100 tree of 10 deph
 
 if __name__ == '__main__':
-    url = "https://en.wikipedia.org/wiki/Algorithm"
-    content_page = get_request(url)
-    print(parse_request(content_page))
-    print(extract_characteristic(content_page))
-
+    mg = mongo_methods.MongoAcess()
+    print(type(mg.read()))
