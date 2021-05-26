@@ -1,4 +1,27 @@
 #Readme
+Neste repositório foi implementado um arquitetura capaz de coletar, armazenar e disponibilizar informações no contexto de extração de dados de páginoas Web.
+
+Tecnologias utilizadas:
+- Docker
+- Docker-composer
+- MongoDb
+- FastAPI
+
+
+--------------
+
+# Setup
+Prerequisites
+- Docker
+- Docker-compose
+
+# Deploy
+1. Clone this repository ( `'$ git clone '` )
+2. get in the project ( `'$ cd technical-challenge '`)
+3. run Makefile to create the database and api docker (`'$ make install '`)
+4. Inform the parameters and make a request (`'$ source venv/bin/activate '`)
+5. Run the model random forest (`'$ python scraping.py '`)
+
 
 - extract data from pages
 - count the number of references (“appearances”) that we find of
