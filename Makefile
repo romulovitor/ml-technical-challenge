@@ -1,5 +1,9 @@
 include .env
 
+.ONESHELL:
+PYTHON := ${PWD}/venv/bin/python3
+PIP := ${PWD}/venv/bin/pip3
+
 .PHONY: up
 
 up:
@@ -18,6 +22,23 @@ user:
     -e MONGO_INITDB_ROOT_USERNAME=mongoadmin \
     -e MONGO_INITDB_ROOT_PASSWORD=secret \
     mongo
+image:
+	docker build -t api .
+map:
+	docker stop `docker ps -a -q`
+rm:
+	docker rm `docker ps -a -q`
+
+venv:
+	@echo "Inicializa uma venv local."
+	virtualenv venv -p python3.7
+
+install: venv
+	@echo "Instala as dependências numa venv local."
+	${PIP} install -r requirements.txt
+
+
 #docker stop `docker ps -a -q`
 # docker rm `docker ps -a -q`
+#docker-compose down --rmi all -v
 # mongo -u romulo -p toor
