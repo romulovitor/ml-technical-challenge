@@ -1,4 +1,4 @@
-#Readme
+# Readme
 Neste repositório foi implementado um arquitetura capaz de coletar, armazenar e disponibilizar informações no contexto de extração de dados de páginoas Web.
 
 Tecnologias utilizadas:

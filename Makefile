@@ -42,3 +42,6 @@ install: venv
 # docker rm `docker ps -a -q`
 #docker-compose down --rmi all -v
 # mongo -u romulo -p toor
+# docker build -t myimage .
+# db.links.find().pretty()
+# db.links.remove({})
