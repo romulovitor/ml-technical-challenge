@@ -1,20 +1,20 @@
-from typing import Optional
-from pymongo import MongoClient
 from fastapi import FastAPI, Response
 from database import mongo_methods
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-import json
 
 from typing import List
 from pydantic import BaseModel
-from database.mongo_methods import MongoAcess
+from ml_model.random_forest import get_prediction
+from scraping import get_request, parse_request_wrap
 
 app = FastAPI()
+
 
 class Item(BaseModel):
     name: str
     address: str
+
 
 @app.get("/it", response_model=List[Item])
 async def read_roott():
@@ -40,7 +40,20 @@ def read_root():
 @app.get("/items")
 def read_links():
     mg = mongo_methods.MongoAcess()
-    print(mg.insert_mongo())
-    print(type(mg.read()))
     json_compatible_item_data = jsonable_encoder(mg.insert_mongo())
+    return JSONResponse(content=json_compatible_item_data)
+
+
+@app.get("/prediction/")
+def prediction(link: str):
+    # http://0.0.0.0/prediction/?link=https://en.wikipedia.org/wiki/Algorithm
+    # /items/?link=
+    # consulte in db to see if already made the prediction
+    # Make it and storage in db
+    #link = 'https://en.wikipedia.org/wiki/Algorithm'
+    prediction = get_prediction(link)
+    print(prediction)
+
+    #json_compatible_item_data = jsonable_encoder(result_from_db)
+    json_compatible_item_data = jsonable_encoder({"link": link, "prediction": prediction[0]})
     return JSONResponse(content=json_compatible_item_data)

@@ -15,7 +15,7 @@ class MongoAcess():
     def __init__(self):
         self.db_user = 'romulo'
         self.db_pass = 'toor'
-        self.host = 'localhost'
+        self.host = 'mongo'
         self.port = '27017'
         self.string_conection = 'mongodb://' + self.db_user + ':' + self.db_pass + '@' + self.host + ':' + self.port
 
@@ -25,12 +25,25 @@ class MongoAcess():
         mycol = mydb["links"]
         try:
             dct_x = mycol.insert_one(characteristic)
-            print(dct_x)
+            print("Save in database")
             return dct_x
         except:
             print("It was not possible save in database")
 
-    def read_link(self, link):
+    def update_collection_link(self, link, prediction):
+        client = MongoClient(self.string_conection)
+        mydb = client['scraping_link']
+        mycol = mydb["links"]
+        myquery = {"link": str(link)}
+        newvalues = {"$set": {"prediction": prediction}}
+
+        mycol.update_one(myquery, newvalues)
+        # print "customers" after the update:
+        for x in mycol.find():
+            print(x)
+        return x
+
+    def read_by_link_from_api(self, link):
         client = MongoClient(self.string_conection)
         mydb = client['scraping_link']
         mycol = mydb["links"]
@@ -39,10 +52,32 @@ class MongoAcess():
         mydoc = mycol.find(myquery)
         print(mydoc)
         docs_list = []
-        for x in mydoc:
-            docs_list.append(x)
-            print(x)
+        result = list(mydoc)
+        if len(result)!=0:
+            for x in mydoc:
+                if x is None:
+                    docs_list.append(x)
+                print(x)
         return json.dumps(docs_list, default=json_util.default)
+
+
+    def read_by_link(self, link):
+        client = MongoClient(self.string_conection)
+        mydb = client['scraping_link']
+        mycol = mydb["links"]
+        myquery = {"link": "" + str(link) + ""}
+        print(myquery)
+        mydoc = mycol.find(myquery)
+        print(mydoc)
+        docs_list = []
+        result = list(mydoc)
+        if len(result)!=0:
+            for x in mydoc:
+                if x is None:
+                    docs_list.append(x)
+                print(x)
+        return json.dumps(docs_list, default=json_util.default)
+
 
     def read(self):
         client = MongoClient(self.string_conection)
@@ -56,6 +91,20 @@ class MongoAcess():
             print(x)
         return json.dumps(docs_list, default=json_util.default)
 
+    def read_from_db_return_list(self, link):
+        import random
+        client = MongoClient(self.string_conection)
+        mydb = client['scraping_link']
+        mycol = mydb["links"]
+        myquery = {"link": str(link)}
+        mydoc = mycol.find(myquery)
+        #mydb.mycol.find({'predicition': {'$exists': True}})
+        docs_list = []
+        for x in mydoc:
+            docs_list.append(x)
+            print(x)
+        return docs_list
+
     def read_to_ml(self, len_sample):
         import random
         client = MongoClient(self.string_conection)
@@ -67,7 +116,7 @@ class MongoAcess():
             count = mycol.estimated_document_count()
             print(mycol.find()[random.randrange(count)])
             docs_list.append(mycol.find()[random.randrange(count)])
-            x = x+1
+            x = x + 1
         return docs_list
 
     def read_all(self):
@@ -79,10 +128,6 @@ class MongoAcess():
             docs_list.append(x)
             print(x)
         return json.dumps(docs_list, default=json_util.default)
-
-    def convert_to_csv(self):
-        # pd.DataFrame(d.items(), columns=['Date', 'DateValue'])
-        pass
 
 
 if __name__ == '__main__':
