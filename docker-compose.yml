@@ -4,9 +4,8 @@ services:
     container_name: docker-fastapi
     #command: python -u main.py
     #cd $PWD/app && python -u main.py
-    #image: api
-
-    build: .
+    image: api
+    #build: .
     restart: always
     ports:
       - '80:80'
@@ -17,6 +16,8 @@ services:
     volumes:
       - .:/app
     #docker run -d --name mycontainer -p 80:80 myimg
+    #command: python -m pip install numpy
+
 
   mongo:
     container_name: mongo
