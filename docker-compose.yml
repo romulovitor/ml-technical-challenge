@@ -2,8 +2,6 @@ version: '3'
 services:
   app:
     container_name: docker-fastapi
-    #command: python -u main.py
-    #cd $PWD/app && python -u main.py
     image: api
     #build: .
     restart: always
@@ -15,8 +13,6 @@ services:
       - mongo
     volumes:
       - .:/app
-    #docker run -d --name mycontainer -p 80:80 myimg
-    #command: python -m pip install numpy
 
 
   mongo:
@@ -39,4 +35,3 @@ services:
     restart: always
 volumes:
   mongodbdata:
-#CMD [ "python", "app/main.py" ]
