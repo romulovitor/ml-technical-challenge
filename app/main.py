@@ -18,11 +18,6 @@ def prediction(link: str):
     :param link: The url inform by user
     :return: Prediction to user
     """
-    # http://0.0.0.0/prediction/?link=https://en.wikipedia.org/wiki/Algorithm
-    # /items/?link=
-    # consulte in db to see if already made the prediction
-    # Make it and storage in db
-    # link = 'https://en.wikipedia.org/wiki/Algorithm'
     prediction = get_prediction(link)
     json_compatible_item_data = jsonable_encoder({"link": link, "prediction": prediction})
     return JSONResponse(content=json_compatible_item_data)

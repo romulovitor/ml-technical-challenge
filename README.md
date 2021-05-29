@@ -17,6 +17,7 @@ Prerequisites
 - Docker
 - Docker-compose
 - Python >= 3.7.1
+- Virtualenv >= 20.0.35
 
 --------------  
 
@@ -28,8 +29,12 @@ Prerequisites
 4. Activate the virtual dependencies (`'$ source venv/bin/activate '`)
 5. Make the environment API (`'$ make api '`)
 6. Make the infrastructure to run the application (`'$ make up'`)
-7. New terminal in this same path run the scraping  (`'$ python scraping.py -l 'https://en.wikipedia.org/wiki/Algorithm'  -d 15 '`)  
-8. Run the model random forest using API type in your browser this (`'$ http://0.0.0.0/prediction/?link=https://en.wikipedia.org/wiki/Algorithm '`)
+7. Run in the terminal (`'$ python scraping.py -l 'https://en.wikipedia.org/wiki/Algorithm'  -d 15 '`)  
+8. Run the model random forest using API type in your browser this http://0.0.0.0/prediction/?link=https://en.wikipedia.org/wiki/Algorithm
+
+
+PS: Scraping -> To extract new characteristics  of a link just change the following parameters: **-l** (new link) **-d** (how depth)
+Prediction -> To make a new prediction just change the parameter http://0.0.0.0/prediction/?link=(new_link) on the browser url
 
 --------------  
 

@@ -16,7 +16,6 @@ def get_prediction(link):
         result = parameter_send_model(result_from_db_new)
         mg.update_collection_link(link, result)
         return result
-
     elif any("prediction" in s for s in result_from_db):
         print("Possui a predição já armazenada")
         prediction_from_db = mg.read_by_link(link)
@@ -48,6 +47,12 @@ def prepared_model(x):
     x_train = model_dataset(x)
     x_train_label = x_train['total_appearences']
     del x_train['total_appearences']
+    try:
+        del x_train['prediction']
+    except Exception as e:
+        print(e)
+
+    print(x_train)
     x_train = np.reshape(x_train, (int(len(x_train)), 10))
     return x_train, x_train_label
 
