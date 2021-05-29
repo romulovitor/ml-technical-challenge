@@ -1,4 +1,3 @@
-include .env
 
 .ONESHELL:
 PYTHON := ${PWD}/venv/bin/python3
@@ -31,7 +30,7 @@ rm:
 
 venv:
 	@echo "Inicializa uma venv local."
-	virtualenv venv -p python3.7
+	virtualenv venv -p python
 
 install: venv
 	@echo "Instala as dependências numa venv local."

@@ -23,13 +23,13 @@ Prerequisites
 # Deploy  
 
 1. Clone this repository ( `'$ git clone https://github.com/romulovitor/ml-technical-challenge.git '` )  
-2. Get in the project ( `'$ cd technical-challenge '`)  
+2. Get in the project ( `'$ cd ml-technical-challenge '`)  
 3. Run to create the environment of development  (`'$ make install '`)  
 4. Activate the virtual dependencies (`'$ source venv/bin/activate '`)
 5. Make the environment API (`'$ make api '`)
 6. Make the infrastructure to run the application (`'$ make up'`)
 7. Run the scraping  (`'$ python scraping.py -l 'https://en.wikipedia.org/wiki/Algorithm'  -d 15 '`)  
-8. Run the model random forest using API  (`'$ http://0.0.0.0/prediction/?link=https://en.wikipedia.org/wiki/Algorithm '`)
+8. Run the model random forest using API type in your browser this (`'$ http://0.0.0.0/prediction/?link=https://en.wikipedia.org/wiki/Algorithm '`)
 
 --------------  
 
