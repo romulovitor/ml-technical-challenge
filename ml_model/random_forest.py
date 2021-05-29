@@ -11,12 +11,10 @@ def get_prediction(link):
     if len(result_from_db) == 0:  # new link
         print("Novo link")
         content_page = get_request(link)
-        parse_request_wrap(link, content_page, 1)
-        result_from_db = mg.read_from_db_return_list(link)
-        x_train, x_label = prepared_model(result_from_db)
-        predict = build_model(x_train)
-        result = predict[0]
-        mg.update_collection_link(link, predict)
+        parse_request_wrap(link, content_page, 1, src=False)
+        result_from_db_new = mg.read_from_db_return_list(link)
+        result = parameter_send_model(result_from_db_new)
+        mg.update_collection_link(link, result)
         return result
 
     elif any("prediction" in s for s in result_from_db):
@@ -25,12 +23,16 @@ def get_prediction(link):
         return prediction_from_db
     else:
         print("Existe mas não foi calculado a predição")
-        print(result_from_db)
-        x_train, x_label = prepared_model(result_from_db)
-        predict = build_model(x_train)
-        result = predict[0]
+        result = parameter_send_model(result_from_db)
         mg.update_collection_link(link, result)
         return result
+
+
+def parameter_send_model(result_from_db):
+    x_train, x_label = prepared_model(result_from_db)
+    predict = build_model(x_train)
+    result = predict[0]
+    return result
 
 
 def run_model(regressor_returned, base_predict):  # , dict_link
@@ -70,7 +72,7 @@ def split_train_test():
     :return: list train and test
     """
     mg = mongo_methods.MongoAcess()
-    doc_list = mg.read_to_ml(15)
+    doc_list = mg.read_to_ml(10)
     cut_point = int(len(doc_list) * 0.7)
     train_ds = doc_list[:cut_point]
     test_ds = doc_list[cut_point:]
@@ -103,5 +105,3 @@ def build_model(to_predict):
     trained_model = train_model_random_forest(x_train, x_label)
     prediction_result = run_model(trained_model, to_predict)
     return prediction_result
-
-
